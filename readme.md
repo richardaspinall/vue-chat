@@ -12,13 +12,16 @@ Basic chat application with VueJS, NodeJS and MySQL
 
 - [x] Set up and configure development environment
 
-  - Installed express, dotenv, jest, esLint and npm-run-all
+  - Installed express, dotenv, jest, esLint and npm-run-all packages
   - Configured eslint with airbnb base
   - Scaffolded base server and router
   - Configured test suite (jest) with one test
   - Create readme
 
-- [ ] Configure and install MySQL
+- [x] Configure and install MySQL
+
+  - Installed mysql
+  - Added starter scripts to create database and initialize schema and seed scripts
 
 - [ ] Define database schema
 
