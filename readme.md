@@ -1,4 +1,4 @@
-# vue-chat-app
+# vue-chat
 
 > **Start date: 9 August 2021**
 
@@ -16,14 +16,19 @@ Basic chat application with VueJS, NodeJS and MySQL
   - Configured eslint with airbnb base
   - Scaffolded base server and router
   - Configured test suite (jest) with one test
-  - Create readme
+  - Created readme
 
 - [x] Configure and install MySQL
 
   - Installed mysql
   - Added starter scripts to create database and initialize schema and seed scripts
 
-- [ ] Define database schema
+- [x] Define database schema
+
+  - Created four tables: user, room, message, room_users
+  - Reviewed each type
+  - Made consistent
+  - Added to seed script
 
 - [ ] Write routes
 

@@ -39,7 +39,7 @@ const connection = mysql.createConnection({
 connection.connect();
 
 // Recreate database
-connection.query('DROP DATABASE IF EXISTS vuechatapp; CREATE DATABASE vuechatapp;', (error) => {
+connection.query('DROP DATABASE IF EXISTS vuechat; CREATE DATABASE vuechat;', (error) => {
   if (error) throw error;
 });
 
