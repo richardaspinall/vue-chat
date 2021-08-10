@@ -2,14 +2,16 @@ require('dotenv').config();
 const express = require('express');
 const request = require('supertest');
 const router = require('./router');
+const DBConnection = require('./database/dbConnection');
 const clearTests = require('../dev_scripts/database/clearTests');
 
 const app = express();
+app.use(express.json());
 
 app.use(router);
 
-// Unknown endpoint call
-describe('Base API test', () => {
+// Unknown routes
+describe('Unknown route', () => {
   it.only('Recieves 404', async () => {
     const response = await request(app).get('/');
 
@@ -17,37 +19,37 @@ describe('Base API test', () => {
   });
 });
 
+// User routes
 describe('User routes', () => {
-  it('Gets a user', async () => {
+  it.only('Gets a user', async () => {
     const response = await request(app).get('/user/1');
 
     expect(response.statusCode).toEqual(200);
     expect(response.body).toEqual({
+      user_id: 1,
       user_name: 'raspinall',
       first_name: 'richard',
       last_name: 'aspinall',
     });
   });
 
-  it('Gets all users in a room', async () => {
-    const response = await request(app).get('/users?room_id=1');
+  it.only('Gets all users', async () => {
+    const response = await request(app).get('/users');
 
     expect(response.statusCode).toEqual(200);
-    expect(response.body).toEqual(
-      {
-        user_name: 'raspinall',
-        first_name: 'richard',
-        last_name: 'aspinall',
-      },
-      {
-        user_name: 'james',
-        first_name: 'james',
-        last_name: 'smith',
-      }
+    expect(response.body.users).toEqual(
+      expect.arrayContaining([
+        expect.objectContaining({
+          user_id: expect.any(Number),
+          user_name: expect.any(String),
+          first_name: expect.any(String),
+          last_name: expect.any(String),
+        }),
+      ])
     );
   });
 
-  it('Creates a user', async () => {
+  it.only('Creates a user', async () => {
     const response = await request(app).post('/user').send({
       user_name: 'jdoe',
       first_name: 'jane',
@@ -56,14 +58,26 @@ describe('User routes', () => {
     });
 
     expect(response.statusCode).toEqual(200);
+    expect(response.body).toEqual(
+      expect.objectContaining({
+        user_id: expect.any(Number),
+        user_name: expect.any(String),
+        first_name: expect.any(String),
+        last_name: expect.any(String),
+      })
+    );
+  });
+
+  it.only('Returns user_not_found error', async () => {
+    const response = await request(app).get('/user/100');
+
+    expect(response.statusCode).toEqual(404);
     expect(response.body).toEqual({
-      user_name: 'jdoe',
-      first_name: 'jane',
-      last_name: 'doe',
+      error: 'user_not_found',
     });
   });
 
-  it('Returns user_name_taken error', async () => {
+  it.only('Returns user_name_taken error', async () => {
     const response = await request(app).post('/user').send({
       user_name: 'raspinall',
       first_name: 'richard',
@@ -71,13 +85,13 @@ describe('User routes', () => {
       password: 'testpassword',
     });
 
-    expect(response.statusCode).toEqual(400);
+    expect(response.statusCode).toEqual(409);
     expect(response.body).toEqual({
       error: 'user_name_taken',
     });
   });
 
-  it('Returns user_name_maxlength error', async () => {
+  it.only('Returns user_name_maxlength error', async () => {
     const response = await request(app).post('/user').send({
       user_name: 'raspinall123456789123',
       first_name: 'richard',
@@ -85,13 +99,13 @@ describe('User routes', () => {
       password: 'testpassword',
     });
 
-    expect(response.statusCode).toEqual(400);
+    expect(response.statusCode).toEqual(422);
     expect(response.body).toEqual({
       error: 'user_name_maxlength',
     });
   });
 
-  it('Returns name_maxlength error', async () => {
+  it.only('Returns name_maxlength error', async () => {
     const response = await request(app).post('/user').send({
       user_name: 'maxlength',
       first_name: 'richardrichardrichardrichardrichardrichardrichardrichard',
@@ -99,13 +113,13 @@ describe('User routes', () => {
       password: 'testpassword',
     });
 
-    expect(response.statusCode).toEqual(400);
+    expect(response.statusCode).toEqual(422);
     expect(response.body).toEqual({
       error: 'name_maxlength',
     });
   });
 
-  it('Returns password_minlength error', async () => {
+  it.only('Returns password_minlength error', async () => {
     const response = await request(app).post('/user').send({
       user_name: 'raspinall',
       first_name: 'richard',
@@ -113,13 +127,14 @@ describe('User routes', () => {
       password: 'test',
     });
 
-    expect(response.statusCode).toEqual(400);
+    expect(response.statusCode).toEqual(422);
     expect(response.body).toEqual({
       error: 'password_minlength',
     });
   });
 });
 
+// Room routes
 describe('Room routes', () => {
   it('Gets a room', async () => {
     const response = await request(app).get('/room/1');
@@ -184,6 +199,7 @@ describe('Room routes', () => {
   });
 });
 
+// Message routes
 describe('Message routes', () => {
   it('Returns all messages in a room', async () => {
     const response = await request(app).get('/messages?room_id=1');
@@ -192,12 +208,14 @@ describe('Message routes', () => {
     expect(response.body).toEqual({
       messages: [
         {
+          message_id: 1,
           room_id: 1,
           user_id: 1,
           time_stamp: 1624669801.101,
           message: 'Hey James!',
         },
         {
+          message_id: 2,
           room_id: 1,
           user_id: 2,
           time_stamp: 1624669801.102,
@@ -228,4 +246,7 @@ describe('Message routes', () => {
   });
 });
 
-afterAll(() => clearTests());
+afterAll(() => {
+  clearTests();
+  DBConnection.closePool();
+});

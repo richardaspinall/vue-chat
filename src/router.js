@@ -1,30 +1,25 @@
 const express = require('express');
+const User = require('./controllers/User');
+const Room = require('./controllers/Room');
+const validation = require('./middeware/validation');
 
 const router = express.Router();
 
 /// User routes ///
 
 // Get a user
-router.get('/user/:user_id', (req, res) => {
-  res.send(`User ${req.params.user_id}`);
-});
+router.get('/user/:user_id', User.info);
 
 // Get all users in a room
-router.get('/users', (req, res) => {
-  res.send(`All users in room ${req.query.room_id}`);
-});
+router.get('/users', User.list);
 
 // Create a user
-router.post('/user', (req, res) => {
-  res.send(req.body);
-});
+router.post('/user', validation.createUser, User.create);
 
 /// Room routes ///
 
 // Get a room
-router.get('/room/:room_id', (req, res) => {
-  res.send(`Room ${req.params.room_id}`);
-});
+router.get('/room/:room_id', Room.info);
 
 // Get all rooms
 router.get('/rooms', (req, res) => {

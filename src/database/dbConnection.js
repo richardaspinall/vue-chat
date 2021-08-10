@@ -1,19 +1,26 @@
 const mysql = require('mysql');
 const util = require('util');
 
-const pool = mysql.createPool({
-  host: process.env.DB_HOST,
-  user: process.env.DB_USER,
-  password: process.env.DB_PASSWORD,
-  database: process.env.DB_NAME,
-});
+class DBConnection {
+  constructor() {
+    this.pool = mysql.createPool({
+      host: process.env.DB_HOST,
+      user: process.env.DB_USER,
+      password: process.env.DB_PASSWORD,
+      database: process.env.DB_NAME,
+    });
 
-const connection = util.promisify(pool.query).bind(pool);
+    // Makes querying asynchronous for async/await syntax
+    this.connection = util.promisify(this.pool.query).bind(this.pool);
+  }
 
-export async function execute(query) {
-  return await connection(query);
+  async execute(query) {
+    return this.connection(query);
+  }
+
+  closePool() {
+    this.pool.end();
+  }
 }
 
-export function closePool() {
-  pool.end();
-}
+module.exports = new DBConnection();

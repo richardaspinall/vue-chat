@@ -4,7 +4,7 @@
   "description": "Basic chat application with VueJS, NodeJS and MySQL ",
   "main": "server.js",
   "scripts": {
-    "test": "jest",
+    "test": "jest --detectOpenHandles",
     "lint": "esw . --ext .ts --color",
     "start": "nodemon"
   },

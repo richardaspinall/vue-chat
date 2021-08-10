@@ -1,9 +1,9 @@
 INSERT INTO user
 (user_name, first_name, last_name, password)
 VALUES 
-('raspinall', 'richard', 'aspinall', 'test'),
-('james', 'james', 'smith', 'test'),
-('fred', 'fred', 'flintstone', 'test');
+('raspinall', 'richard', 'aspinall', 'testpassword'),
+('james', 'james', 'smith', 'testpassword'),
+('fred', 'fred', 'flintstone', 'testpassword');
 
 INSERT INTO room
 (room_name)

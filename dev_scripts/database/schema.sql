@@ -4,8 +4,8 @@ CREATE TABLE user
 (
   user_id INT unsigned NOT NULL AUTO_INCREMENT,     
   user_name VARCHAR(20) NOT NULL UNIQUE,             
-  first_name VARCHAR(50) NOT NULL,                  
-  last_name VARCHAR(50) NOT NULL,                   
+  first_name VARCHAR(50),                  
+  last_name VARCHAR(50),                   
   password CHAR(60) NOT NULL,                       
   PRIMARY KEY (user_id)                             
 );
@@ -31,7 +31,7 @@ CREATE TABLE message
 
 CREATE TABLE room_users
 (
-  room_id INT unsigned,
+  room_id INT unsigned NOT NULL,
   user_id INT unsigned NOT NULL,                                      
   FOREIGN KEY (room_id) REFERENCES room(room_id),
   FOREIGN KEY (user_id) REFERENCES user(user_id),      
