@@ -1,11 +1,11 @@
-USE vuechat;
+USE vuechat_dev;
 
 CREATE TABLE user
 (
   user_id INT unsigned NOT NULL AUTO_INCREMENT,     
   user_name VARCHAR(20) NOT NULL UNIQUE,             
-  first_name VARCHAR(20) NOT NULL,                  
-  last_name VARCHAR(20) NOT NULL,                   
+  first_name VARCHAR(50) NOT NULL,                  
+  last_name VARCHAR(50) NOT NULL,                   
   password CHAR(60) NOT NULL,                       
   PRIMARY KEY (user_id)                             
 );
@@ -13,7 +13,7 @@ CREATE TABLE user
 CREATE TABLE room
 (
   room_id INT unsigned NOT NULL AUTO_INCREMENT,    
-  room_name VARCHAR(20) NOT NULL,                                                        
+  room_name VARCHAR(20) NOT NULL UNIQUE,                                                        
   PRIMARY KEY (room_id) 
 );
 

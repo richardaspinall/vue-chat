@@ -12,10 +12,10 @@ VALUES
 ('general');
 
 INSERT INTO message
-(room_id, user_id, message, time_stamp)
+(room_id, user_id, time_stamp, message)
 VALUES
-(1,1,"Hey James!", 1624669801.101),
-(1,2,"Hey Richard!", 1624669801.102);
+(1, 1, 1624669801.101, "Hey James!" ),
+(1, 2, 1624669801.102, "Hey Richard!" );
 
 INSERT INTO room_users
 (room_id, user_id)

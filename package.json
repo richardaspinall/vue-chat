@@ -6,7 +6,6 @@
   "scripts": {
     "test": "jest",
     "lint": "esw . --ext .ts --color",
-    "prestart": "npm-run-all test",
     "start": "nodemon"
   },
   "repository": {
