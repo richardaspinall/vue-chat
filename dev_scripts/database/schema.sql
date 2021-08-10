@@ -13,8 +13,7 @@ CREATE TABLE user
 CREATE TABLE room
 (
   room_id INT unsigned NOT NULL AUTO_INCREMENT,    
-  room_name VARCHAR(20) NOT NULL,                           
-  password CHAR(60) NOT NULL,                               
+  room_name VARCHAR(20) NOT NULL,                                                        
   PRIMARY KEY (room_id) 
 );
 

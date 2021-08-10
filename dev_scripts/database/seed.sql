@@ -6,16 +6,16 @@ VALUES
 ('fred', 'fred', 'flintstone', 'test');
 
 INSERT INTO room
-(room_name, password)
+(room_name)
 VALUES
-('random','test'),
-('general','test');
+('random'),
+('general');
 
 INSERT INTO message
 (room_id, user_id, message, time_stamp)
 VALUES
-(1,1,"Hey James!", 1624669801.100),
-(1,2,"Hey Richard!", 1624669866.101);
+(1,1,"Hey James!", 1624669801.101),
+(1,2,"Hey Richard!", 1624669801.102);
 
 INSERT INTO room_users
 (room_id, user_id)

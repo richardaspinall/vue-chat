@@ -30,7 +30,11 @@ Basic chat application with VueJS, NodeJS and MySQL
   - Made consistent
   - Added to seed script
 
-- [ ] Write routes
+- [x] Define routes
+
+  - Created routes for users, rooms, messages and authentication
+  - Added Postman collection with dummy calls
+  - Added middleware for JSON syntax parsing error
 
 - [ ] Write unit tests
 

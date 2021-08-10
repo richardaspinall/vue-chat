@@ -2,9 +2,9 @@ const request = require('supertest');
 const server = require('./server');
 
 describe('Base test', () => {
-  it('Tests that our server runs', async () => {
+  it('Tests that our server runs and recieves a 404', async () => {
     const response = await request(server).get('/');
-    expect(response.text).toEqual('Hello World');
+    expect(response.statusCode).toEqual(404);
   });
 });
 
