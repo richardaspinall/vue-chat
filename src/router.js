@@ -22,14 +22,10 @@ router.post('/user', validation.createUser, User.create);
 router.get('/room/:room_id', Room.info);
 
 // Get all rooms
-router.get('/rooms', (req, res) => {
-  res.send('All rooms');
-});
+router.get('/rooms', Room.list);
 
 // Create a room
-router.post('/room', (req, res) => {
-  res.send(req.body);
-});
+router.post('/room', validation.createRoom, Room.create);
 
 /// Message routes ///
 

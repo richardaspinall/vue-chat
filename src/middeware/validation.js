@@ -19,6 +19,23 @@ function createUser(req, res, next) {
   }
 }
 
+function createRoom(req, res, next) {
+  const room = req.body;
+  let error;
+
+  if (room.room_name === '') {
+    error = 'room_name_missing';
+  } else if (room.room_name.length > 20) {
+    error = 'room_name_maxlength';
+  }
+  if (error) {
+    res.status(422).send({ error });
+  } else {
+    next();
+  }
+}
+
 module.exports = {
   createUser,
+  createRoom,
 };

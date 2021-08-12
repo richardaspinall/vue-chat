@@ -38,10 +38,10 @@ const User = {
       }
 
       if (result[0]) {
-        const roomUsers = { users: [] };
+        const userList = { users: [] };
 
         result.forEach((user) => {
-          roomUsers.users.push({
+          userList.users.push({
             user_id: user.user_id,
             user_name: user.user_name,
             first_name: user.first_name,
@@ -49,7 +49,7 @@ const User = {
           });
         });
 
-        res.send(roomUsers);
+        res.send(userList);
       } else {
         res.status(404).send({ error: 'users_not_found' });
       }

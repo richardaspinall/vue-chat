@@ -69,7 +69,7 @@ describe('User routes', () => {
   });
 
   it.only('Returns user_not_found error', async () => {
-    const response = await request(app).get('/user/100');
+    const response = await request(app).get('/user/1000000');
 
     expect(response.statusCode).toEqual(404);
     expect(response.body).toEqual({
@@ -136,63 +136,59 @@ describe('User routes', () => {
 
 // Room routes
 describe('Room routes', () => {
-  it('Gets a room', async () => {
+  it.only('Gets a room', async () => {
     const response = await request(app).get('/room/1');
 
     expect(response.statusCode).toEqual(200);
-    expect(response.body).toEqual({
-      room_id: 1,
-      room_name: 'random',
-    });
+    expect(response.body).toEqual(
+      expect.objectContaining({
+        room_id: expect.any(Number),
+        room_name: expect.any(String),
+      })
+    );
   });
 
-  it('Gets all rooms', async () => {
+  it.only('Gets all rooms', async () => {
     const response = await request(app).get('/rooms');
 
     expect(response.statusCode).toEqual(200);
-    expect(response.body).toEqual({
-      rooms: [
-        {
-          room_id: 1,
-          room_name: 'random',
-        },
-        {
-          room_id: 2,
-          room_name: 'general',
-        },
-      ],
-    });
+    expect(response.body.rooms).toEqual(
+      expect.arrayContaining([
+        expect.objectContaining({
+          room_id: expect.any(Number),
+          room_name: expect.any(String),
+        }),
+      ])
+    );
   });
 
-  it('Creates a room', async () => {
-    const allRooms = await request(app).get('/rooms');
-    const expectedRoomId = allRooms.rooms.length;
+  it.only('Creates a room', async () => {
     const response = await request(app).post('/room').send({ room_name: 'cats' });
 
     expect(response.statusCode).toEqual(200);
     expect(response.body).toEqual({
-      room_id: expectedRoomId,
+      room_id: expect.any(Number),
       room_name: 'cats',
     });
   });
 
-  it('Returns room_name_taken error', async () => {
+  it.only('Returns room_name_taken error', async () => {
     const response = await request(app).post('/room').send({
       room_name: 'general',
     });
 
-    expect(response.statusCode).toEqual(400);
+    expect(response.statusCode).toEqual(409);
     expect(response.body).toEqual({
       error: 'room_name_taken',
     });
   });
 
-  it('Returns room_name_maxlength error', async () => {
+  it.only('Returns room_name_maxlength error', async () => {
     const response = await request(app).post('/room').send({
       room_name: 'general12345678912345',
     });
 
-    expect(response.statusCode).toEqual(400);
+    expect(response.statusCode).toEqual(422);
     expect(response.body).toEqual({
       error: 'room_name_maxlength',
     });
